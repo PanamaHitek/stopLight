@@ -38,6 +38,8 @@ void loop() {
     Minutos = 0;
     Horas = 0;
 
+//Secuencia de luces parpadeantes cuando se produce el reset
+
     digitalWrite(7, HIGH);
     digitalWrite(5, HIGH);
     digitalWrite(6, HIGH);
@@ -71,7 +73,7 @@ void loop() {
 
   }
 
-
+//Función para el control del tiempo
   TimeRelatedEvents();
 }
 
