@@ -1,3 +1,28 @@
+/*
+---------------------------------------
+| Semáforo con Arduino, versión 1.0.0 |        Diseñado por Antony García González, del Panama Hitek Creative Team
+---------------------------------------
+
+Este algoritmo le da funcionamiento a un semáforo, cuyo diagrama pictórico se puede encontrar en la dirección
+http://panamahitek.com/semaforo-con-arduino-v1-0-0/
+
+Este semáforo no ha sido diseñado para que funcione como el clásico dispositivo de control de tráfico que vemos en
+nuestras calles, sino que se construyó para que funcionara como indicador visual del tiempo restante para presentaciones
+orales.
+Al estar celebrando un ciclo de conferencias, fue necesario para nosotros hayar la manera de indicarle a determinado
+expositor el tiempo que le quedaba. Así, la luz verde permanece encendida por 28 minutos, la luz amarilla por 2 minutos
+y a partir de los 30 minutos de iniciada la exposición se enciende la luz roja, indicando que el tiempo de la exposición
+ha terminado.
+
+El funcionamiento de este dispositivo se puede modificar para que sea usado como semáforo de tránsito. De igual forma
+se puede cambiar el tiempo para que sea más o menos tiempo que los 30 minutos preestablecidos.
+
+Los invito a visitar nuestro blog http://panamahitek.com
+El dispositivo funcionando en tiempo de ejecución lo pueden apreciar en el siguiente video:
+https://www.youtube.com/watch?v=R6xY0yPHS68
+
+*/
+
 #include <EEPROM.h>;
 int Minutos;
 int Segundos;
@@ -38,7 +63,7 @@ void loop() {
     Minutos = 0;
     Horas = 0;
 
-//Secuencia de luces parpadeantes cuando se produce el reset
+    //Secuencia de luces parpadeantes cuando se produce el reset
 
     digitalWrite(7, HIGH);
     digitalWrite(5, HIGH);
@@ -73,12 +98,13 @@ void loop() {
 
   }
 
-//Función para el control del tiempo
+  //Función para el control del tiempo
   TimeRelatedEvents();
 }
 
 void TimeRelatedEvents() {
   SecondAfter = millis();
+  //Conteo de los segundos
   if ((SecondAfter - SecondBefore) > 1000) {
     SecondBefore = SecondAfter;
 
@@ -87,6 +113,7 @@ void TimeRelatedEvents() {
       Segundos = 0;
       Minutos++;
       EEPROM.write(2, Minutos);
+      //Tiempo de duración de la luz verde (28)
       if (Minutos == (28)) {
 
         digitalWrite(7, HIGH);
@@ -106,6 +133,7 @@ void TimeRelatedEvents() {
         //Serial.println("Amarilo");
       }
 
+      //Tiempo antes de la activación de la luz roja (30 minutos)
       if (Minutos > (29)) {
         digitalWrite(6, HIGH);
         delay(250);
